@@ -27,7 +27,11 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="*" element={<PageNotFound />} />
+          <Route
+            path="*"
+            isAuthenticate={isAuthenticate}
+            element={<PageNotFound />}
+          />
         </Routes>
       </Router>
     );
@@ -36,7 +40,11 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="*" element={<PageNotFound />} />
+          <Route
+            path="*"
+            isAuthenticate={isAuthenticate}
+            element={<PageNotFound />}
+          />
         </Routes>
       </Router>
     );

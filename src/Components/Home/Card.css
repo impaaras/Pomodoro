@@ -1,0 +1,22 @@
+.card {
+  width: 285px;
+  height: 80px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.card__title {
+  margin-left: 15px;
+}
+.card__title h2 {
+  font-size: 16px;
+  color: rgba(54, 55, 58, 1);
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+}
+.card__title p {
+  font-size: 14px;
+  line-height: 1px;
+  color: rgba(54, 55, 58, 1);
+  font-weight: 200;
+  font-family: "Poppins", sans-serif;
+}

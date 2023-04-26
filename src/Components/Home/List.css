@@ -1,0 +1,87 @@
+.list {
+  /* border: 2px solid #36373a; */
+  width: 330px;
+  border-radius: 5px;
+  margin: 10px 15px;
+  height: 530px;
+  padding-bottom: 70px;
+  background-color: #ededf2;
+}
+
+.top__list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 15px;
+  align-items: center;
+}
+
+.top__list p {
+  color: #36373a;
+  font-family: "Poppins", sans-serif;
+}
+
+.top__list .list__icon {
+  cursor: pointer;
+  color: #36373a;
+  font-size: 22px;
+}
+
+.card__box {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  max-height: 480px;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: scroll;
+  margin: 0 15px;
+}
+.card__box::-webkit-scrollbar {
+  display: none;
+}
+.card {
+  width: calc(100% - 20px);
+  margin: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  padding: 10px;
+  font-family: "Poppins", sans-serif;
+  word-wrap: break-word;
+  max-height: 100%;
+  overflow-y: auto;
+}
+.card__box > div {
+  margin: 10px;
+}
+
+.add__card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add__card input {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  width: 52%;
+  color: rgba(54, 55, 58, 1);
+  font-family: "Poppins", sans-serif;
+  margin-right: 10px;
+  background-color: #fff;
+  border: 2px solid #ededf2;
+}
+.add__card input:focus {
+  outline: none;
+}
+.add__card button {
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: #fff;
+  color: #36373a;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+}

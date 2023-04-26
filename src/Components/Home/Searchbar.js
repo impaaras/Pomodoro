@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./SearchBar.css";
 import { MdTimer } from "react-icons/md";
 import { AiOutlineCoffee } from "react-icons/ai";
 import { TfiMenuAlt } from "react-icons/tfi";
+import Modal from "./Modal";
 
 const Searchbar = () => {
   return (
@@ -16,10 +17,12 @@ const Searchbar = () => {
         <div className="time">
           <MdTimer className="timer" />
           <button>25.00</button>
+          {/* <button onClick={reset}>Reset</button> */}
         </div>
         <div className="break">
-          <AiOutlineCoffee className="coffe" />
-          <button>BREAK</button>
+          <AiOutlineCoffee className="coffee" />
+          <button>Break</button>
+          {/* {isBreak && <Modal message="It's break time!" />} */}
         </div>
       </div>
     </div>

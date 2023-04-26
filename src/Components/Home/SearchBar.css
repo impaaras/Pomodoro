@@ -6,7 +6,7 @@
 }
 .searchBar {
   border: 1px solid rgba(54, 55, 58, 1);
-  background-color: rgba(54, 55, 58, 1);
+  background-color: #fff;
   display: flex;
   align-items: center;
   width: 90%;
@@ -15,7 +15,7 @@
   border-radius: 5px;
 }
 .searchBar p {
-  color: rgba(237, 237, 242, 1);
+  color: rgba(54, 55, 58, 1);
 
   font-family: "Poppins", sans-serif;
 }
@@ -23,17 +23,17 @@
   outline: none;
 }
 .searchBar input {
-  background-color: rgba(54, 55, 58, 1);
+  background-color: #fff;
   border: none;
-  color: white;
+  color: rgba(54, 55, 58, 1);
   width: 90%;
   margin-left: 15px;
   /* padding: 10px; */
-  color: #ededf2;
+
   font-family: "Poppins", sans-serif;
 }
 .search {
-  background-color: #313237;
+  background-color: #fff;
   padding: 10px;
 }
 .search__side__button {
@@ -45,12 +45,12 @@
 .search__side__button button {
   border: none;
   cursor: pointer;
-  background-color: #313237;
+  background-color: #fff;
   font-size: 20px;
-  color: white;
+  color: rgba(54, 55, 58, 1);
 }
 .searchBar .menu {
-  color: rgba(237, 237, 242, 1);
+  color: rgba(54, 55, 58, 1);
   font-size: 20px;
   margin-right: 10px;
 }
@@ -64,12 +64,18 @@
   flex-direction: column;
   align-items: center;
 }
+.break .coffee {
+  font-size: 24px;
+}
 .search__side__button .timer {
-  color: rgba(237, 237, 242, 1);
+  color: rgba(54, 55, 58, 1);
   font-size: 22px;
+}
+.break button {
+  font-size: 18px;
 }
 
 .search__side__button .break {
-  color: rgba(237, 237, 242, 1);
+  color: rgba(54, 55, 58, 1);
   font-size: 22px;
 }

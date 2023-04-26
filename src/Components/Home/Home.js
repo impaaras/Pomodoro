@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Searchbar from "./Searchbar";
 import "./Home.css";
+import Body from "./Body";
+import { FiMessageSquare } from "react-icons/fi";
+import { BiLogOutCircle } from "react-icons/bi";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,9 +18,18 @@ const Home = () => {
 
   return (
     <div className="dashboard">
-      <Header />
-      <Searchbar />
-      <button onClick={logout}>Logout</button>
+      <div className="sidebar">
+        <FiMessageSquare className="sidebar__icon" />
+        <BiLogOutCircle onClick={logout} className="logoutButton" />
+      </div>
+      <div className="main__body">
+        <div>
+          <Header />
+          <Searchbar />
+          <Body />
+        </div>
+      </div>
+      {/* <button onClick={logout}>Logout</button> */}
     </div>
   );
 };

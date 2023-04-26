@@ -17,6 +17,7 @@ const Home = () => {
     <div className="dashboard">
       <Header />
       <Searchbar />
+      <button onClick={logout}>Logout</button>
     </div>
   );
 };

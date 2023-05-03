@@ -7,7 +7,7 @@ const Card = ({ text }) => {
       <div></div>
       <div className="card__title">
         <h2>{text}</h2>
-        <p>Front page with all all content</p>
+        {/* <p>Front page with all all content</p> */}
       </div>
       <div></div>
       <div></div>

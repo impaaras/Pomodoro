@@ -3,18 +3,18 @@
   justify-content: space-between;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #fff;
+  background-color: rgba(54, 55, 58, 1);
   align-items: center;
 }
 .header a {
   text-decoration: none;
-  color: #313237;
+  color: #fff;
   font-family: "Poppins", sans-serif;
   font-size: 20px;
 }
 .header p {
   font-size: 16px;
   font-family: "Poppins", sans-serif;
-  color: #313237;
+  color: #fff;
   font-family: "Poppins", sans-serif;
 }

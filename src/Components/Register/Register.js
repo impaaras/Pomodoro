@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase";
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
@@ -35,6 +35,7 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (res) => {
         console.log(res);
+        await updateProfile(auth.currentUser, { displayName: name });
         const user = res.user;
         console.log(user);
         Navigate("/");
@@ -47,20 +48,20 @@ const Register = () => {
   return (
     <div className="login-page">
       <div className="login-box">
-        <div className="illustration-wrapper">
+        {/* <div className="illustration-wrapper">
           <img
             src="https://mixkit.imgix.net/art/preview/mixkit-left-handed-man-sitting-at-a-table-writing-in-a-notebook-27-original-large.png?q=80&auto=format%2Ccompress&h=700"
             alt="Login"
           />
-        </div>
+        </div> */}
         <Form
           name="login-form"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
-          <p className="form-title">Welcome back</p>
-          <p>Login to the Dashboard</p>
+          <p className="form-title">Let's create account</p>
+          <p>Register to the Dashboard</p>
           <Form.Item
             name="name"
             rules={[{ required: true, message: "Please input your name!" }]}

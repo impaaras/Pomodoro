@@ -1,11 +1,11 @@
 .list {
   /* border: 2px solid #36373a; */
-  width: 330px;
+  width: 25%;
   border-radius: 5px;
-  margin: 10px 15px;
+  margin: 10px 10px;
   height: 530px;
   padding-bottom: 70px;
-  background-color: #ededf2;
+  background-color: #313237;
 }
 
 .top__list {
@@ -17,13 +17,13 @@
 }
 
 .top__list p {
-  color: #36373a;
+  color: #fff;
   font-family: "Poppins", sans-serif;
 }
 
 .top__list .list__icon {
   cursor: pointer;
-  color: #36373a;
+  color: #fff;
   font-size: 22px;
 }
 
@@ -54,6 +54,7 @@
 }
 .card__box > div {
   margin: 10px;
+  background-color: rgba(54, 55, 58, 1);
 }
 
 .add__card {
@@ -67,11 +68,11 @@
   border-radius: 5px;
   padding: 5px;
   width: 52%;
-  color: rgba(54, 55, 58, 1);
+  color: #fff;
   font-family: "Poppins", sans-serif;
   margin-right: 10px;
-  background-color: #fff;
-  border: 2px solid #ededf2;
+  background-color: rgba(54, 55, 58, 1);
+  border: 2px solid rgba(54, 55, 58, 1);
 }
 .add__card input:focus {
   outline: none;
@@ -80,8 +81,8 @@
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
-  background-color: #fff;
-  color: #36373a;
+  background-color: rgba(54, 55, 58, 1);
+  color: #fff;
   font-family: "Poppins", sans-serif;
   cursor: pointer;
 }

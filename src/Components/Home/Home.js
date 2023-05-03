@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "reactstrap";
 import { auth } from "../../Firebase";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import { FiMessageSquare } from "react-icons/fi";
 import { BiLogOutCircle } from "react-icons/bi";
 
 const Home = () => {
+  const [clicked, setClicked] = useState(true);
   const navigate = useNavigate();
   const logout = () => {
     auth.signOut();
@@ -19,16 +20,29 @@ const Home = () => {
   return (
     <div className="dashboard">
       <div className="sidebar">
-        <FiMessageSquare className="sidebar__icon" />
+        <FiMessageSquare
+          className="sidebar__icon"
+          onClick={() => setClicked(!clicked)}
+        />
         <BiLogOutCircle onClick={logout} className="logoutButton" />
       </div>
-      <div className="main__body">
-        <div>
-          <Header />
-          <Searchbar />
-          <Body />
+      {clicked ? (
+        <div className="main__body">
+          <div>
+            <Header />
+            <Searchbar />
+            <Body />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="main__body">
+          <div>
+            <Header />
+            {/* <Searchbar /> */}
+            {/* <Body /> */}
+          </div>
+        </div>
+      )}
       {/* <button onClick={logout}>Logout</button> */}
     </div>
   );

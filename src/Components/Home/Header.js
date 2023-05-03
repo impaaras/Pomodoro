@@ -1,5 +1,6 @@
 import React from "react";
 import "./Header.css";
+import { auth } from "../../Firebase";
 const Header = () => {
   return (
     <div className="header">
@@ -7,7 +8,9 @@ const Header = () => {
         <a href="/">EmProductify</a>
       </div>
       <div>
-        <p>Gautam joshi</p>
+        <p>
+          {auth.currentUser.displayName ? auth.currentUser.displayName : `User`}
+        </p>
       </div>
     </div>
   );

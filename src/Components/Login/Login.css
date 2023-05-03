@@ -21,7 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #d9edff;
+  background: rgba(54, 55, 58, 1);
 }
 .login-box {
   display: flex;
@@ -43,6 +43,7 @@ body {
 }
 #login-form p {
   margin-bottom: 30px;
+  color: white;
 }
 #login-form p.form-title {
   color: #333333;
@@ -60,9 +61,27 @@ body {
 }
 #login-form .ant-input-affix-wrapper {
   padding: 12px 15px;
+  background-color: rgba(54, 55, 58, 1);
+}
+
+#login-form_email::placeholder {
+  color: white;
+}
+#login-form_password {
+  background-color: rgba(54, 55, 58, 1);
+  color: white;
+}
+#login-form_password::placeholder {
+  color: white;
 }
 #login-form_email {
   height: 48px;
+  background-color: rgba(54, 55, 58, 1);
+  color: white;
+}
+
+.ant-checkbox + span {
+  color: white;
 }
 #login-form .ant-btn {
   height: 42px;
@@ -72,11 +91,16 @@ body {
 .login-form-button {
   width: 100%;
   padding: 10px;
-  background-color: #335ddc;
-  color: white;
+  background-color: #fff;
+  color: rgba(54, 55, 58, 1);
+  border-radius: 5px;
   font-size: 18px;
   cursor: pointer;
   border: none;
+}
+.register a {
+  color: white;
+  border-bottom: 1px solid white;
 }
 .illustration-wrapper {
   display: flex;

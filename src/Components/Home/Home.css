@@ -2,30 +2,35 @@
   background-color: #fff;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  height: 100vh;
 }
 .main__body {
+  width: 98%;
+  height: 100vh;
+  background-color: rgba(54, 55, 58, 1);
 }
-.sidebar {
-  width: 250px;
-  /* width: 50%; */
-  background-color: #ededf2;
-}
+
 .sidebar {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  width: 2%;
   align-items: center;
-  width: 100%;
+  /* width: 100%; */
   padding: 15px;
-  background-color: #f0f0f0;
+  background-color: #313237;
 }
 
 .sidebar__icon {
   font-size: 28px;
+  color: white;
+
+  cursor: pointer;
 }
 
 .logoutButton {
   font-size: 28px;
   cursor: pointer;
+  color: white;
 }

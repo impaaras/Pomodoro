@@ -1,0 +1,91 @@
+.business_title {
+  font-size: 22px;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+}
+.group {
+  font-size: 26px;
+}
+.group__title {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.addNewWorkspace {
+  margin-left: 15px;
+  width: 350px;
+  margin-bottom: 10px;
+  height: 150px;
+  background-color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+}
+.addNewWorkspace h2 {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+}
+.mb-3 {
+  margin-bottom: 10px;
+}
+.title__text {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+}
+.workspace {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.workspaces {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+.upper {
+  position: relative;
+}
+.addNewWorkspace2 {
+  /* position: relative; */
+  background-color: rgba(0, 0, 0, 0.5); /* Light black overlay */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* Apply light black shade */
+  margin-left: 15px;
+  justify-content: space-between;
+  width: 350px;
+  height: 150px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.workspace__title {
+  font-size: 20px;
+  color: white;
+  margin-left: 10px;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+}
+.title_icon {
+  font-size: 22px;
+  color: white;
+}
+.deleteButton {
+  font-size: 20px;
+  color: white;
+}
+.title__workspace {
+  display: flex;
+  align-items: center;
+  height: 50px;
+
+  flex-direction: row;
+}

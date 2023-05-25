@@ -1,0 +1,123 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(92, 84, 82, 0.7);
+  /* margin: 0; */
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.navbar h2 {
+  margin: 0;
+}
+.navbar p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+}
+
+.left__navbar {
+  margin-left: 10px;
+  width: 20%;
+}
+
+.button_exit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 25px;
+  height: 25px; */
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+}
+.exit__icon {
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+}
+
+.left__navbar {
+  display: flex;
+  align-items: center;
+}
+
+/* Midle */
+.logo {
+  width: 20%;
+}
+
+/* Right side */
+.right__navbar {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  margin-right: 10px;
+  align-items: center;
+}
+.input__left::placeholder {
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+}
+.input__left {
+  color: #fff;
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  border: none;
+}
+/* searchbar timer */
+.search__side__button {
+  display: flex;
+  flex-direction: row;
+}
+.search__side__button button {
+  border: none;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.3);
+  font-size: 10px;
+  color: rgba(54, 55, 58, 1);
+}
+.searchBar .menu {
+  color: #fff;
+  font-size: 20px;
+  margin-right: 10px;
+}
+.search__side__button .time button {
+  width: 40px;
+  height: 32px;
+  border-radius: 5px;
+  margin-right: 13px;
+  font-size: 14px;
+}
+.search__side__button .break {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.break .coffee {
+  font-size: 24px;
+}
+.search__side__button .timer {
+  color: #fff;
+  font-size: 16px;
+}
+.break button {
+  font-size: 14px;
+}
+
+.search__side__button .break {
+  color: rgba(54, 55, 58, 1);
+  font-size: 22px;
+}
+.userName {
+  width: 50px;
+}
+
+/* Modal content */
+.modal__content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../Firebase";
+import { collection, addDoc } from "firebase/firestore";
+// import { auth, db } from "../firebase";
+import { auth, db } from "../../Firebase";
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import { Form, Input, Checkbox } from "antd";
@@ -31,18 +33,29 @@ const Register = () => {
   };
   const Navigate = useNavigate();
 
-  const handleRegister = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (res) => {
-        console.log(res);
-        await updateProfile(auth.currentUser, { displayName: name });
-        const user = res.user;
-        console.log(user);
-        Navigate("/");
-      })
-      .catch((err) => {
-        alert(err.message);
+  const handleRegister = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log(user);
+
+      await updateProfile(auth.currentUser, { displayName: name });
+
+      await addDoc(collection(db, "users"), {
+        uid: user.uid,
+        name: name,
+        email: email,
+        createdAt: new Date(),
       });
+
+      Navigate("/");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (

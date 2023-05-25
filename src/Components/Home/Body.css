@@ -1,6 +1,74 @@
-.body {
+.body__content {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  background-color: rgba(54, 55, 58, 1);
+  overflow-x: scroll;
+  height: 85vh;
+  margin-right: 10px;
+  margin-left: 10px;
+  scrollbar-width: thin; /* Set the width of the scrollbar */
+  scrollbar-color: gray lightgray; /* Set the color of the scrollbar thumb and track */
+}
+
+.body__content::-webkit-scrollbar {
+  height: 10px;
+  width: 2px; /* Set the width of the scrollbar */
+}
+
+.body__content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px; /* Set the border radius of the scrollbar thumb */
+}
+
+.body__content::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Set the color of the scrollbar track */
+  border-radius: 4px; /* Set the border radius of the scrollbar track */
+}
+
+.button_exit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 25px;
+  height: 25px; */
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+}
+.addToButton {
+  margin-top: 10px;
+}
+.addButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* background-color: rgba(255, 255, 255, 0.6); */
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+}
+.addPlus {
+  font-size: 18px;
+}
+
+.addOption {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #fff;
+  height: fit-content;
+}
+.addOption_button {
+  color: #fff;
+  margin-right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.addToCancel {
+  margin-top: 10px;
+}
+.addinput {
+  width: 250px;
 }

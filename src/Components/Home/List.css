@@ -1,23 +1,27 @@
 .list {
   /* border: 2px solid #36373a; */
-  width: 25%;
+  width: 320px;
   border-radius: 5px;
-  margin: 10px 10px;
-  height: 530px;
-  padding-bottom: 70px;
-  background-color: #313237;
+  /* margin: 10px 10px; */
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: fit-content;
+  background-color: #ddd;
 }
 
 .top__list {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 10px 15px;
+  margin: 5px 8px;
   align-items: center;
 }
 
 .top__list p {
-  color: #fff;
+  color: #000;
+  margin: 0px;
+  font-size: 14px;
   font-family: "Poppins", sans-serif;
 }
 
@@ -30,12 +34,12 @@
 .card__box {
   display: flex;
   flex-wrap: wrap;
-  height: auto;
-  max-height: 480px;
+  height: fit-content;
+  max-height: 500px;
   align-items: flex-start;
   justify-content: center;
   overflow-y: scroll;
-  margin: 0 15px;
+  margin: 0 5px;
 }
 .card__box::-webkit-scrollbar {
   display: none;
@@ -53,26 +57,27 @@
   overflow-y: auto;
 }
 .card__box > div {
-  margin: 10px;
-  background-color: rgba(54, 55, 58, 1);
+  margin: 5px;
+  background-color: #fff;
 }
 
 .add__card {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  margin: 10px 10px;
 }
 
 .add__card input {
   border: none;
   border-radius: 5px;
   padding: 5px;
-  width: 52%;
-  color: #fff;
+  width: 320px;
+  color: #000;
   font-family: "Poppins", sans-serif;
   margin-right: 10px;
-  background-color: rgba(54, 55, 58, 1);
-  border: 2px solid rgba(54, 55, 58, 1);
+  background-color: transparent;
+  border: 2px solid transparent;
 }
 .add__card input:focus {
   outline: none;

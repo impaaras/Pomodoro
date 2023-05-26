@@ -11,20 +11,14 @@ import { auth, db } from "../../Firebase";
 import { Button, Input } from "antd";
 import { useParams } from "react-router-dom";
 
-const Chat = () => {
+const Chat = ({ workspaceId }) => {
   const [users, setUsers] = useState([]);
 
   const [messages, setMessages] = useState([]);
 
-  const workspaceId = useParams();
   const [messageInput, setMessageInput] = useState("");
 
-  const chatsCollectionRef = collection(
-    db,
-    "workspaces",
-    workspaceId.toString(),
-    "chats"
-  );
+  const chatsCollectionRef = collection(db, "workspaces", workspaceId, "chats");
 
   // Function to add a new chat message
   const sendMessage = async () => {
@@ -36,6 +30,7 @@ const Chat = () => {
         message: messageInput,
         sender: auth.currentUser.uid,
         timestamp: new Date(),
+        senderName: auth.currentUser.displayName,
       });
 
       // Clear the message input field
@@ -66,14 +61,22 @@ const Chat = () => {
 
     const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
       const usersData = [];
+      const currentTime = new Date().getTime();
+
       snapshot.forEach((doc) => {
-        usersData.push(doc.data());
+        const userData = doc.data();
+        const lastOnline = userData.lastOnline || 0; // Default to 0 if "lastOnline" field is not set
+        const isOnline = currentTime - lastOnline < 60000; // Set online status within the last 60 seconds
+
+        usersData.push({ ...userData, isOnline });
       });
+
       setUsers(usersData);
     });
 
-    return () => unsubscribe(); // Cleanup the listener when component unmounts
+    return () => unsubscribe(); // Cleanup the listener when the component unmounts
   }, []);
+
   return (
     <div
       style={{ marginLeft: "10px", marginRight: "10px", borderRadius: "5px" }}
@@ -132,7 +135,7 @@ const Chat = () => {
                       borderRadius: "50px",
                     }}
                   >
-                    {user.name.charAt(0).toUpperCase()}
+                    {auth.currentUser.displayName.charAt(0).toUpperCase()}
                   </span>
 
                   <div
@@ -156,15 +159,15 @@ const Chat = () => {
                         {user.name}
                       </p>
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         width: "10px",
                         height: "10px",
                         borderRadius: "50px",
-                        backgroundColor: "green",
+                        background: user.isOnline ? "green" : "#000",
                         marginRight: "10px",
                       }}
-                    ></div>
+                    ></div> */}
                   </div>
                 </div>
               </div>
@@ -183,26 +186,55 @@ const Chat = () => {
           <div style={{ flex: "1", padding: "10px", overflowY: "auto" }}>
             {messages &&
               messages.map((message, index) => (
-                <p
+                <div
                   key={index}
                   style={{
-                    textAlign:
+                    display: "flex",
+                    justifyContent:
                       message.sender === auth.currentUser.uid
-                        ? "left"
-                        : "right",
-                    backgroundColor:
-                      message.sender === auth.currentUser.uid ? "#DDD" : "#FFF",
-                    color: "#000",
-                    width: "fit-content",
-                    padding: "5px",
-                    margin: "5px",
-                    borderRadius: "5px",
+                        ? "flex-end"
+                        : "flex-start",
                   }}
                 >
-                  {message.message}
-                </p>
+                  <p
+                    style={{
+                      textAlign:
+                        message.sender === auth.currentUser.uid
+                          ? "right"
+                          : "left",
+                      backgroundColor:
+                        message.sender === auth.currentUser.uid
+                          ? "#DDD"
+                          : "#FFF",
+                      padding: "5px",
+                      margin: "5px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    {message.message}
+                    <span
+                      style={{
+                        marginBottom: "5px",
+                        marginTop: "5px",
+                        marginRight: "5px",
+                        width: "fit-content",
+                        marginLeft: "10px",
+                        fontSize: "14px",
+                        fontFamily: "Poppins",
+                        backgroundColor: "#000",
+                        padding: "2px 8px",
+                        color: "#FFF",
+                        borderRadius: "50px",
+                      }}
+                    >
+                      {message.senderName &&
+                        auth.currentUser.displayName.charAt(0).toUpperCase()}
+                    </span>
+                  </p>
+                </div>
               ))}
           </div>
+
           <div style={{ padding: "10px" }}>
             <Input
               type="text"

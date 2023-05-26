@@ -61,7 +61,7 @@ const Home = () => {
               <p>{doc.name}</p>
             </Button>
             <Button className="title__work">
-              <p>Private</p>
+              <p>{doc.visibility}</p>
             </Button>
           </div>
           <div className="dashboard">
@@ -83,7 +83,7 @@ const Home = () => {
             ) : (
               <div className="main__body">
                 <div>
-                  <Chat />
+                  <Chat workspaceId={workspaceId} />
                   {/* <Searchbar /> */}
                   {/* <Body /> */}
                 </div>

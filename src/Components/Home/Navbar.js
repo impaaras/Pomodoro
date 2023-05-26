@@ -19,10 +19,12 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
   onSnapshot,
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
 
 const Navbar = ({ author }) => {
   const { shift, setShift } = useContext(GlobalStateContext);
@@ -206,6 +208,52 @@ const Navbar = ({ author }) => {
     };
   }, [workspaceId]);
 
+  const [changeName, setChangeName] = useState(false);
+  const [newNameInput, setNewNameInput] = useState("");
+
+  const handleChangeName = async (e) => {
+    e.preventDefault();
+
+    const newName = e.target.value;
+
+    if (!newName) {
+      return;
+    }
+
+    try {
+      // Update the name in the users collection
+      const usersCollectionRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersCollectionRef);
+      querySnapshot.forEach((doc) => {
+        const user = doc.data();
+        if (user.uid === auth.currentUser.uid) {
+          // Update the user's name
+          const userRef = doc.ref;
+          updateDoc(userRef, { name: newName });
+
+          // Update the displayName of the current user
+
+          updateProfile(auth.currentUser, {
+            displayName: newName,
+          })
+            .then(() => {
+              console.log("Profile updated successfully.");
+            })
+            .catch((error) => {
+              console.error("Error updating profile:", error);
+            });
+        }
+      });
+    } catch (error) {
+      console.error("Error updating name:", error);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleChangeName(e);
+    }
+  };
   return (
     <div className="navbar">
       <Modal
@@ -288,6 +336,7 @@ const Navbar = ({ author }) => {
             <AiFillSetting className="exit__icon" />
           </Button>
           <Button
+            onClick={() => setChangeName(true)}
             className="button_exit"
             style={{
               fontSize: "18px",
@@ -305,6 +354,23 @@ const Navbar = ({ author }) => {
       {/* {isBreak && <ModalBreak message="It's break time!" />} */}
       {/* {showModal ? <ModalBreak /> : null} */}
       {visible ? <BackgroundModal /> : null}
+      {changeName ? (
+        <Modal
+          title="Change name"
+          width="400px"
+          open={changeName}
+          onCancel={() => setChangeName(false)}
+          footer={null}
+        >
+          <Input
+            type="text"
+            placeholder="Enter new name"
+            value={newNameInput}
+            onChange={(e) => setNewNameInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+        </Modal>
+      ) : null}
     </div>
   );
 };

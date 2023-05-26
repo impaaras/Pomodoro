@@ -58,8 +58,11 @@ const Workspace = () => {
           ...doc.data(),
         };
 
-        // Check if the workspace owner matches the current user or any member matches the current user
-        if (workspaceData.owner === currentUserUid) {
+        // Check if the workspace owner matches the current user or the visibility is public
+        if (
+          workspaceData.visibility === "public" ||
+          workspaceData.owner === currentUserUid
+        ) {
           updatedWorkspaces.push(workspaceData);
         } else {
           const membersSnapshot = await getDocs(collection(doc.ref, "members"));
@@ -79,19 +82,65 @@ const Workspace = () => {
       setWorkspaces(updatedWorkspaces);
     });
 
-    // Cleanup function to unsubscribe from the snapshot listener
     return () => unsubscribe();
   }, []);
+  useEffect(() => {
+    const workspaceRef = collection(db, "workspaces");
+    const currentUserUid = auth.currentUser.uid;
+
+    const unsubscribe = onSnapshot(workspaceRef, async (snapshot) => {
+      const updatedWorkspaces = [];
+      const membersArray = [];
+
+      for (const doc of snapshot.docs) {
+        const workspaceData = {
+          id: doc.id,
+          ...doc.data(),
+        };
+
+        // Check if the workspace owner matches the current user or the visibility is public
+        if (
+          workspaceData.visibility === "public" ||
+          workspaceData.owner === currentUserUid
+        ) {
+          updatedWorkspaces.push(workspaceData);
+        } else {
+          const membersSnapshot = await getDocs(collection(doc.ref, "members"));
+          const membersData = membersSnapshot.docs
+            .map((memberDoc) => memberDoc.data())
+            .filter((member) => member.id === currentUserUid);
+
+          if (membersData.length > 0) {
+            membersArray.push(membersData);
+            updatedWorkspaces.push(workspaceData);
+          }
+        }
+      }
+
+      // set the array of membersData
+      setmembers(membersArray);
+      setWorkspaces(updatedWorkspaces);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const [visibility, setVisibility] = useState("");
 
   const handleCreateWorkspace = async () => {
     if (title.trim() === "") {
       alert("Please enter a title for the workspace.");
       return;
     }
+    if (visibility === "") {
+      alert("Please select a visibility option.");
+      return;
+    }
 
     try {
       const workspaceRef = collection(db, "workspaces");
       const newWorkspace = await addDoc(workspaceRef, {
+        visibility: visibility,
         name: title.trim(),
         createdAt: new Date(),
         owner: auth.currentUser.uid,
@@ -100,6 +149,7 @@ const Workspace = () => {
       console.log("New workspace created with ID:", newWorkspace.id);
 
       setTitle("");
+      setVisibility("");
       // Additional actions after creating the workspace
       // ...
 
@@ -153,7 +203,7 @@ const Workspace = () => {
         <Modal
           title="Create Workspace"
           width="400px"
-          visible={visible}
+          open={visible}
           onCancel={() => setVisible(false)}
           footer={null}
         >
@@ -165,6 +215,17 @@ const Workspace = () => {
               value={title}
               onChange={(event) => setTitle(event.target.value)}
             />
+            <div>
+              <select
+                className="mb-3"
+                style={{ width: "100%", padding: "10px" }}
+                value={visibility}
+                onChange={(event) => setVisibility(event.target.value)}
+              >
+                <option value="private">Private</option>
+                <option value="public">Public</option>
+              </select>
+            </div>
             <Button type="primary" onClick={handleCreateWorkspace}>
               Create
             </Button>
@@ -202,7 +263,7 @@ const Workspace = () => {
           {/* Delete Confirmation Modal */}
           <Modal
             title="Confirm Delete"
-            visible={!!workspaceToDelete}
+            open={!!workspaceToDelete}
             onOk={confirmDelete}
             onCancel={cancelDelete}
           >

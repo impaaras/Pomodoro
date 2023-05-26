@@ -35,6 +35,7 @@ function ShowingList({
   source,
   destination,
   deleteCard,
+  author,
 }) {
   const [newCardText, setNewCardText] = useState("");
   const [cards, setCards] = useState([]);
@@ -108,10 +109,12 @@ function ShowingList({
         >
           <div className="top__list">
             <p>{listName}</p>
-            <BiDotsVerticalRounded
-              className="list__icon"
-              onClick={() => deleteList(id)}
-            />
+            {author && author == auth.currentUser.uid ? (
+              <BiDotsVerticalRounded
+                className="list__icon"
+                onClick={() => deleteList(id)}
+              />
+            ) : null}
           </div>
           <div>
             {cards.map((card, index) => (
@@ -135,6 +138,7 @@ function ShowingList({
                       des={card.description}
                       destination={destination}
                       deleteCard={deleteCard}
+                      author={author}
                     />
                   </div>
                 )}
@@ -407,6 +411,7 @@ const Body = ({ author }) => {
             source={source}
             destination={destination}
             workspaceId={workspaceId} // Pass the workspaceId prop to ShowingList
+            author={author}
           />
         ))}
       </DragDropContext>

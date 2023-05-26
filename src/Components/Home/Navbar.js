@@ -284,16 +284,21 @@ const Navbar = ({ author }) => {
             </p>
             <GiTomato onClick={toggle} className="tommato" />
           </Button>
-          <Button
-            className="button_exit"
-            style={{ fontSize: "18px", color: "#FFF" }}
-          >
-            {auth.currentUser.displayName
-              ? auth.currentUser.displayName
-              : `User`}
-          </Button>
           <Button className="button_exit" onClick={() => setVisible(true)}>
             <AiFillSetting className="exit__icon" />
+          </Button>
+          <Button
+            className="button_exit"
+            style={{
+              fontSize: "18px",
+              borderRadius: "100px",
+              backgroundColor: "#526D82",
+              color: "#FFF",
+            }}
+          >
+            {auth.currentUser.displayName
+              ? auth.currentUser.displayName.charAt(0).toUpperCase()
+              : "U"}
           </Button>
         </div>
       </div>

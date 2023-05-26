@@ -11,22 +11,31 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../Firebase";
+import { auth, db } from "../../Firebase";
 import { Button, Input, Modal } from "antd";
 import { HiMenuAlt2 } from "react-icons/hi";
 
-const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
-  // function deleteCard(workspaceId, id) {
-  //   if (destination) {
-  //     deleteDoc(doc(db, workspaceId, del, "cards", id))
-  //       .then(() => {
-  //         console.log("Card deleted successfully");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error deleting card:", error);
-  //       });
-  //   }
-  // }
+const Card = ({
+  text,
+  id,
+  del,
+  workspaceId,
+  des,
+  destination,
+  deleteCard,
+  author,
+}) => {
+  function deleteCard(workspaceId, id) {
+    if (destination) {
+      deleteDoc(doc(db, workspaceId, del, "cards", id))
+        .then(() => {
+          console.log("Card deleted successfully");
+        })
+        .catch((error) => {
+          console.error("Error deleting card:", error);
+        });
+    }
+  }
 
   const [isclicked, setClicked] = useState(true);
 
@@ -68,7 +77,10 @@ const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
     const taskRef = doc(db, workspaceId, del, "cards", id, "tasks", taskId);
 
     try {
-      await updateDoc(taskRef, { status: newValue });
+      await updateDoc(taskRef, {
+        status: newValue,
+        taskEditor: auth.currentUser.displayName,
+      });
       console.log("Task updated in Firestore.");
     } catch (error) {
       console.error("Error updating task:", error);
@@ -76,7 +88,11 @@ const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
   };
 
   const handleAddTask = async (taskName) => {
-    const taskData = { name: taskName, status: false };
+    const taskData = {
+      name: taskName,
+      status: false,
+      taskEditor: auth.currentUser.displayName,
+    };
 
     try {
       const taskRef = await addDoc(
@@ -93,6 +109,22 @@ const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
     const count = tasksData.filter((task) => !task.status).length;
     setPendingTasks(count);
   };
+
+  const calculateTaskCompletionPercentage = (tasksData) => {
+    const totalTasks = tasksData.length;
+    const completedTasks = tasksData.filter((task) => task.status).length;
+
+    if (totalTasks === 0) {
+      return 100; // If no tasks, consider it 100% completed
+    }
+
+    const completionPercentage = Math.round(
+      (completedTasks / totalTasks) * 100
+    );
+    return completionPercentage;
+  };
+
+  const [taskCompletionPercentage, setTaskCompletionPercentage] = useState(0);
 
   useEffect(() => {
     const fetchTasks = () => {
@@ -113,6 +145,8 @@ const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
             tasksData.push({ id: doc.id, ...doc.data() });
           });
           setTasks(tasksData);
+          const percentage = calculateTaskCompletionPercentage(tasksData);
+          setTaskCompletionPercentage(percentage);
           calculatePendingTasks(tasksData);
         },
         (error) => {
@@ -180,16 +214,28 @@ const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "row",
-                marginTop: "5px",
-                fontSize: "12px",
-                fontFamily: "Poppins",
-                fontWeight: "400",
+                justifyContent: "space-between",
               }}
             >
-              <HiMenuAlt2 style={{ marginRight: "5px", fontSize: "12px" }} />
-              <p>
-                {pendingTasks}/{tasks.length}
-              </p>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  marginTop: "5px",
+                  fontSize: "12px",
+                  fontFamily: "Poppins",
+                  fontWeight: "400",
+                }}
+              >
+                <HiMenuAlt2 style={{ marginRight: "5px", fontSize: "12px" }} />
+                <p>
+                  {pendingTasks}/{tasks.length}
+                </p>
+              </div>
+              <div>
+                <p>{taskCompletionPercentage}%</p>
+              </div>
             </div>
           ) : null}
           {/* <p>Front page with all all content</p> */}
@@ -302,7 +348,31 @@ const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
             />
             {tasks && tasks.length > 0 ? (
               tasks.map((task) => (
-                <div key={task.id} style={{ marginTop: "5px" }}>
+                <div
+                  key={task.id}
+                  style={{
+                    marginTop: "5px",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      marginBottom: "5px",
+                      marginTop: "5px",
+                      marginRight: "5px",
+                      fontSize: "14px",
+                      fontFamily: "Poppins",
+                      backgroundColor: "#27374D",
+                      padding: "2px 8px",
+                      color: "#FFF",
+                      borderRadius: "50px",
+                    }}
+                  >
+                    {task.taskEditor.charAt(0).toUpperCase()}
+                  </p>
+
                   <input
                     type="checkbox"
                     checked={task.status}
@@ -419,18 +489,21 @@ const Card = ({ text, id, del, workspaceId, des, destination, deleteCard }) => {
               >
                 Due Time
               </Button>
-              <Button
-                style={{
-                  backgroundColor: "#DDD",
-                  borderRadius: "3px",
-                  fontSize: "14px",
-                  marginBottom: "10px",
-                  width: "150px",
-                  fontFamily: "Poppins",
-                }}
-              >
-                Delete
-              </Button>
+              {author && author === auth.currentUser.uid ? (
+                <Button
+                  style={{
+                    backgroundColor: "#DDD",
+                    borderRadius: "3px",
+                    fontSize: "14px",
+                    marginBottom: "10px",
+                    width: "150px",
+                    fontFamily: "Poppins",
+                  }}
+                  onClick={() => deleteCard(workspaceId, id)}
+                >
+                  Delete
+                </Button>
+              ) : null}
             </div>
           </div>
         </div>

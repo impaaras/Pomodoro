@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "./Navbar.css";
 import { TiArrowBackOutline } from "react-icons/ti";
 import { Button, Modal, Input, Image } from "antd";
-import { auth } from "../../Firebase";
+import { auth, db } from "../../Firebase";
 import { FiMessageSquare } from "react-icons/fi";
 import { MdTimer } from "react-icons/md";
 import { BsPlusLg } from "react-icons/bs";
@@ -11,8 +11,20 @@ import { AiOutlineCoffee, AiFillSetting } from "react-icons/ai";
 import { TfiMenuAlt } from "react-icons/tfi";
 import BackgroundModal from "./BackgroundModal";
 import { GlobalStateContext } from "../Hooks/GlobalStateContext";
+import { useNavigate, useParams } from "react-router-dom";
+import { GiTomato } from "react-icons/gi";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 
 const Navbar = () => {
+  const { shift, setShift } = useContext(GlobalStateContext);
+
   // const [time, setTime] = useState(
   //   parseInt(localStorage.getItem("time")) || 30
   // );
@@ -112,13 +124,134 @@ const Navbar = () => {
   // };
   const { visible, setVisible } = useContext(GlobalStateContext);
 
+  const changeloc = useNavigate();
+
+  const [add, setAdd] = useState(false);
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    console.log("helo", auth.currentUser.uid);
+    const usersRef = collection(db, "users");
+
+    const unsubscribe = onSnapshot(usersRef, (snapshot) => {
+      const currentUser = auth.currentUser;
+      const usersData = snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter((user) => user.uid !== currentUser.uid); // Exclude the current user
+
+      setUsers(usersData);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  const { workspaceId } = useParams();
+
+  // const handleInviteClick = async (memberId) => {
+  //   try {
+  //     const membersRef = collection(db, "workspaces", workspaceId, "members");
+  //     const newMemberRef = doc(membersRef, memberId);
+
+  //     await addDoc(newMemberRef, {
+  //       accepted: false,
+  //       createdAt: serverTimestamp(),
+  //     });
+
+  //     console.log("Member invitation sent successfully!");
+  //   } catch (error) {
+  //     console.error("Error sending member invitation:", error);
+  //   }
+  // };
+
+  function handleInviteClick(memberId) {
+    const data = {
+      id: memberId,
+      accepted: false,
+      createdAt: serverTimestamp(),
+    };
+
+    addDoc(collection(db, "workspaces", workspaceId, "members"), data)
+      .then(() => {
+        console.log("Member invitation sent successfully!");
+      })
+      .catch((error) => {
+        console.error("Error sending member invitation:", error);
+      });
+  }
+
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    const membersRef = collection(db, "workspaces", workspaceId, "members");
+
+    const unsubscribe = onSnapshot(membersRef, (snapshot) => {
+      const membersData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setMembers(membersData);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [workspaceId]);
+
   return (
     <div className="navbar">
+      <Modal
+        title="Invite people"
+        width="400px"
+        visible={add}
+        onCancel={() => setAdd(false)}
+        footer={null}
+      >
+        {users.map((user, index) => (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            key={index}
+          >
+            <p style={{ margin: "5px", fontSize: "18px" }}>{user.name}</p>
+
+            {members.some((member) => member.id === user.uid) ? (
+              <Button style={{ backgroundColor: "blue" }}>Invited</Button>
+            ) : (
+              <Button onClick={() => handleInviteClick(user.uid)}>
+                Invite
+              </Button>
+            )}
+          </div>
+        ))}
+
+        {/* <form className={`w-full`}>
+          <h2 className="title__text">{title}</h2>
+          <Input
+            className={`mb-3`}
+            placeholder="Title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+          />
+          <Button type="primary" onClick={handleCreateWorkspace}>
+            Create
+          </Button>
+        </form> */}
+      </Modal>
       <div className="left__navbar">
-        <Button className="button_exit">
+        <Button className="button_exit" onClick={() => changeloc("/")}>
           <TiArrowBackOutline className="exit__icon" />
         </Button>
-        <Button className="button_exit">
+        <Button className="button_exit" onClick={() => setShift(!shift)}>
           <FiMessageSquare className="exit__icon" />
         </Button>
         <div>
@@ -136,9 +269,16 @@ const Navbar = () => {
               {Math.floor(time / 60)}:{("0" + (time % 60)).slice(-2)}
             </button>
           </div> */}
-          <Button className="button_exit">
+
+          <Button className="button_exit" onClick={() => setAdd(true)}>
             <BsPlusLg className="exit__icon" />
           </Button>
+          {/* <Button className="button_exit">
+            <p>
+              {Math.floor(time / 60)}:{("0" + (time % 60)).slice(-2)}
+            </p>
+            <GiTomato onClick={toggle} className="tommato" />
+          </Button> */}
           <Button
             className="button_exit"
             style={{ fontSize: "18px", color: "#FFF" }}
@@ -150,14 +290,6 @@ const Navbar = () => {
           <Button className="button_exit" onClick={() => setVisible(true)}>
             <AiFillSetting className="exit__icon" />
           </Button>
-
-          {/* <div className="break">
-            <AiOutlineCoffee className="coffee" style={breakStyle} />
-            <button style={breakStyle} disabled={isBreak}>
-              {isBreak ? "BREAK" : "T"}
-            </button>
-            {isBreak && <Modal message="It's break time!" />}
-          </div> */}
         </div>
       </div>
       {visible ? <BackgroundModal /> : null}

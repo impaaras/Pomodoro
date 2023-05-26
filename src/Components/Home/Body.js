@@ -19,6 +19,7 @@ import {
   query,
   getDocs,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../../Firebase";
 
@@ -33,6 +34,7 @@ function ShowingList({
   draggedCardId,
   source,
   destination,
+  deleteCard,
 }) {
   const [newCardText, setNewCardText] = useState("");
   const [cards, setCards] = useState([]);
@@ -126,12 +128,12 @@ function ShowingList({
                     {...provided.dragHandleProps}
                   >
                     <Card
-                      source={source}
-                      destination={destination}
-                      id={card.id}
                       text={card.text}
+                      id={card.id}
+                      del={id.toString()}
                       workspaceId={workspaceId}
-                      draggedCardId={draggedCardId}
+                      destination={destination}
+                      deleteCard={deleteCard}
                     />
                   </div>
                 )}
@@ -306,13 +308,6 @@ const Body = () => {
       destinationList.cards.splice(destination.index, 0, movedCard);
     }
 
-    // if (destination) {
-    //   addCard("hello");
-    // }
-    if (source) {
-      console.log("deleted");
-      deleteCardFromWorkspace(workspaceId, draggedCardId);
-    }
     setLists(updatedLists);
   };
 
@@ -332,49 +327,68 @@ const Body = () => {
     }
   }
 
-  async function deleteCardFromWorkspace(workspaceId, draggedCardId) {
-    const workspaceRef = doc(db, workspaceId);
-    const workspaceSnapshot = await getDocs(workspaceRef);
+  //   useEffect(() => {
+  //     // Define an async function to fetch the data
+  //     if (destination) {
+  //       console.log("helo");
+  //       const colRef = collection(db, workspaceId);
+  //       const docsSnap = await getDocs(colRef);
+  //       docsSnap.forEach(doc => {
+  //     console.log(doc.data());
+  // })
+  //     }
+  //   }, [destination]);
 
-    if (workspaceSnapshot.empty) {
-      console.log("Workspace does not exist.");
-      return;
-    }
+  // const getData = async () => {
+  //   try {
+  //     const colRef = collection(db, workspaceId);
+  //     const docsSnap = await getDocs(colRef);
+  //     console.log(docsSnap);
+  //     docsSnap.forEach((doc) => {
+  //       console.log(doc.id);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-    const cardsCollectionRef = collection(
-      db,
-      `${workspaceId}/${source.toString()}/cards`
-    );
-    const draggedCardRef = doc(cardsCollectionRef, draggedCardId);
+  // useEffect(() => {
+  //   getData();
+  // }, [destination]);
 
-    try {
-      await deleteDoc(draggedCardRef);
-      console.log("Document deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting document:", error);
-    }
-  }
+  // function deleteCard() {
+  //   console.log(draggedCardId);
+  //   if (destination) {
+  //     deleteDoc(doc(db, workspaceId, source.toString(), "cards", draggedCardId))
+  //       .then(() => {
+  //         console.log("Card deleted successfully");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error deleting card:", error);
+  //       });
+  //   }
+  // }
 
-  function deleteCard(draggedCardId) {
-    console.log(draggedCardId);
-    if (draggedCardId) {
-      const cardRef = doc(
-        db,
-        workspaceId,
-        source.toString(),
-        "cards",
-        draggedCardId
-      );
+  // function deleteCard(draggedCardId) {
+  //   console.log(draggedCardId);
+  //   if (draggedCardId) {
+  //     const cardRef = doc(
+  //       db,
+  //       workspaceId,
+  //       source.toString(),
+  //       "cards",
+  //       draggedCardId
+  //     );
 
-      deleteDoc(cardRef)
-        .then(() => {
-          console.log("Card deleted:", draggedCardId);
-        })
-        .catch((error) => {
-          console.error("Error deleting card:", error);
-        });
-    }
-  }
+  //     deleteDoc(cardRef)
+  //       .then(() => {
+  //         console.log("Card deleted:", draggedCardId);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error deleting card:", error);
+  //       });
+  //   }
+  // }
 
   return (
     <div className="body__content">

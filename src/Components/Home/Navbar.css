@@ -36,6 +36,12 @@
   color: #fff;
   text-align: center;
 }
+.tommato {
+  margin-left: 10px;
+  font-size: 22px;
+  color: tomato;
+  text-align: center;
+}
 
 .left__navbar {
   display: flex;

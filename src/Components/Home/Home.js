@@ -9,10 +9,9 @@ import Navbar from "./Navbar";
 import { collection, onSnapshot } from "firebase/firestore";
 import { GlobalStateContext } from "../Hooks/GlobalStateContext";
 import { db } from "../../Firebase";
+import Chat from "./Chat";
 
 const Home = () => {
-  const [clicked, setClicked] = useState(true);
-
   const navigate = useNavigate();
   const logout = () => {
     auth.signOut();
@@ -40,7 +39,7 @@ const Home = () => {
     return () => unsubscribe(); // Unsubscribe from the snapshot listener when component unmounts
   }, [workspaceId]);
 
-  const { background } = useContext(GlobalStateContext);
+  const { background, shift, setShift } = useContext(GlobalStateContext);
 
   return (
     <>
@@ -73,7 +72,7 @@ const Home = () => {
           />
           <BiLogOutCircle onClick={logout} className="logoutButton" />
         </div> */}
-            {clicked ? (
+            {shift ? (
               <div className="main__body">
                 <div>
                   {/* <Header /> */}
@@ -84,7 +83,7 @@ const Home = () => {
             ) : (
               <div className="main__body">
                 <div>
-                  <Header />
+                  <Chat />
                   {/* <Searchbar /> */}
                   {/* <Body /> */}
                 </div>

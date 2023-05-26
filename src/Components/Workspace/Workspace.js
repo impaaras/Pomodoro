@@ -10,7 +10,7 @@ import {
   doc,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "../../Firebase";
+import { auth, db } from "../../Firebase";
 import { BsFillHouseCheckFill } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
 import { Navigate } from "react-router-dom";
@@ -48,6 +48,7 @@ const Workspace = () => {
       const newWorkspace = await addDoc(workspaceRef, {
         name: title.trim(),
         createdAt: new Date(),
+        provider: auth.currentUser.uid,
       });
 
       console.log("New workspace created with ID:", newWorkspace.id);

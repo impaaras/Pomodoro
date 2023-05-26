@@ -3,109 +3,27 @@ import "./Card.css";
 import { Draggable } from "react-beautiful-dnd";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../Firebase";
+import { Button } from "antd";
 
-const Card = ({
-  text,
-  cardId,
-  source,
-  destination,
-  draggedCardId,
-  id,
-  workspaceId,
-}) => {
-  // useEffect(() => {
-  //   if (!destination) {
-  //     return;
-  //   }
-  // }, []);
-
-  // function handleCardDrop(workspaceId, text, cardId) {
-  //   if (text.trim() === "") {
-  //     return;
-  //   }
-
-  //   const newCard = {
-  //     text: text,
-  //   };
-
-  //   if (cardId) {
-  //     const cardRef = doc(
-  //       db,
-  //       workspaceId,
-  //       destination.toString(),
-  //       "cards",
-  //       cardId
-  //     );
-
-  //     deleteDoc(cardRef)
-  //       .then(() => {
-  //         console.log("Card deleted:", cardId);
-  //         addNewCard(workspaceId, newCard);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error deleting card:", error);
-  //       });
-  //   } else {
-  //     addNewCard(workspaceId, newCard);
-  //   }
-  // }
-
-  // function addNewCard(workspaceId, newCard) {
-  //   addDoc(
-  //     collection(db, workspaceId, destination.toString(), "cards"),
-  //     newCard
-  //   )
+const Card = ({ text, id, del, workspaceId, destination, deleteCard }) => {
+  // function deleteCard(workspaceId, id) {
+  // if (destination) {
+  //   deleteDoc(doc(db, workspaceId, del, "cards", id))
   //     .then(() => {
-  //       console.log("New card added:", newCard);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error adding card:", error);
-  //     });
-  // }
-
-  // useEffect(() => {
-  //   // if (!destination || !workspaceId || !source) {
-  //   //   return;
-  //   // }
-
-  //   // handleCardDrop(workspaceId, text, draggedCardId);
-  //   console.log(destination, source);
-  // }, []);
-
-  // function addCard(workspaceId, text) {
-  //   if (text.trim() !== "") {
-  //     const newCard = {
-  //       text: text,
-  //     };
-
-  //     addDoc(collection(db, workspaceId, destination.toString(), "cards"), newCard)
-  //       .then(() => {
-  //         console.log("New card added:", newCard);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error adding card:", error);
-  //       });
-  //   }
-  // }
-
-  // function deleteCard(workspaceId, cardId) {
-  //   const cardRef = doc(
-  //     db,
-  //     workspaceId,
-  //     source.toString(),
-  //     "cards",
-  //     draggedCardId
-  //   );
-
-  //   deleteDoc(cardRef)
-  //     .then(() => {
-  //       console.log("Card deleted:", cardId);
+  //       console.log("Card deleted successfully");
   //     })
   //     .catch((error) => {
   //       console.error("Error deleting card:", error);
   //     });
   // }
+  // }
 
+  const [isclicked, setClicked] = useState(true);
+
+  if (isclicked && destination) {
+    console.log(destination);
+    setClicked(false);
+  }
   return (
     <div className="card">
       <div></div>
@@ -113,6 +31,7 @@ const Card = ({
         <p>{text}</p>
         {/* <p>Front page with all all content</p> */}
       </div>
+      {/* <button onClick={() => deleteCard(workspaceId, id)}>Delete</button> */}
       <div></div>
       <div></div>
     </div>

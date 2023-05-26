@@ -7,6 +7,7 @@ export const GlobalStateContext = createContext();
 export const GlobalStateProvider = ({ children }) => {
   const [visible, setVisible] = useState(null); // Your global state value
   const [docId, setDocId] = useState("");
+  const [shift, setShift] = useState(true);
   const [background, setBackground] = useState(
     "https://images.hdqwalls.com/download/iron-man-the-avengers-yy-1920x1080.jpg"
   );
@@ -20,6 +21,8 @@ export const GlobalStateProvider = ({ children }) => {
         setDocId,
         visible,
         setVisible,
+        shift,
+        setShift,
       }}
     >
       {children}

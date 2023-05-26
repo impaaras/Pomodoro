@@ -55,7 +55,7 @@ const Home = () => {
             backgroundSize: "cover",
           }}
         >
-          <Navbar />
+          <Navbar author={doc.owner} />
           <div className="work_title">
             <Button className="title__work">
               <p>{doc.name}</p>
@@ -77,7 +77,7 @@ const Home = () => {
                 <div>
                   {/* <Header /> */}
                   {/* <Searchbar /> */}
-                  <Body />
+                  <Body author={doc.owner} />
                 </div>
               </div>
             ) : (

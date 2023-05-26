@@ -48,7 +48,7 @@ const Workspace = () => {
       const newWorkspace = await addDoc(workspaceRef, {
         name: title.trim(),
         createdAt: new Date(),
-        provider: auth.currentUser.uid,
+        owner: auth.currentUser.uid,
       });
 
       console.log("New workspace created with ID:", newWorkspace.id);

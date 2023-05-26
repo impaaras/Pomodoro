@@ -21,7 +21,7 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
-import { db } from "../../Firebase";
+import { auth, db } from "../../Firebase";
 
 function ShowingList({
   id,
@@ -157,7 +157,7 @@ function ShowingList({
   );
 }
 
-const Body = () => {
+const Body = ({ author }) => {
   const [clicked, setClick] = useState(true);
   const [listInput, setListInput] = useState("");
 
@@ -412,10 +412,12 @@ const Body = () => {
 
       {clicked ? (
         <div className="addToButton">
-          <Button className="addButton" onClick={() => setClick(false)}>
-            <BsPlusLg className="addPlus" />
-            Add another list
-          </Button>
+          {author === auth.currentUser.uid ? (
+            <Button className="addButton" onClick={() => setClick(false)}>
+              <BsPlusLg className="addPlus" />
+              Add another list
+            </Button>
+          ) : null}
         </div>
       ) : (
         <div className="addOption">

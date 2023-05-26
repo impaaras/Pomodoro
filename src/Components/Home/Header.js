@@ -1,12 +1,13 @@
 import React from "react";
 import "./Header.css";
 import { auth } from "../../Firebase";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 const Header = () => {
+  const navigate = useNavigate();
   const logout = () => {
     auth.signOut();
-    Navigate("/login");
+    navigate("/login");
   };
   return (
     <div className="header">

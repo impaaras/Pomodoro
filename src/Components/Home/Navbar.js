@@ -24,7 +24,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-const Navbar = () => {
+const Navbar = ({ author }) => {
   const { shift, setShift } = useContext(GlobalStateContext);
 
   const [time, setTime] = useState(
@@ -275,9 +275,11 @@ const Navbar = () => {
             </button>
           </div> */}
 
-          <Button className="button_exit" onClick={() => setAdd(true)}>
-            <BsPlusLg className="exit__icon" />
-          </Button>
+          {auth.currentUser.uid == author ? (
+            <Button className="button_exit" onClick={() => setAdd(true)}>
+              <BsPlusLg className="exit__icon" />
+            </Button>
+          ) : null}
           <Button className="button_exit">
             <p>
               {Math.floor(time / 60)}:{("0" + (time % 60)).slice(-2)}

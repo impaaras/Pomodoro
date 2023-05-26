@@ -132,6 +132,7 @@ function ShowingList({
                       id={card.id}
                       del={id.toString()}
                       workspaceId={workspaceId}
+                      des={card.description}
                       destination={destination}
                       deleteCard={deleteCard}
                     />

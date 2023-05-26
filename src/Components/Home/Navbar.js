@@ -114,15 +114,15 @@ const Navbar = ({ author }) => {
   }, [showModal]);
 
   const timerStyle = {
-    color: isBreak ? "red" : isActive ? "red" : "white",
+    color: isBreak ? "red" : isActive ? "red" : "inherit",
   };
 
   const iconStyle = {
-    color: isBreak ? "red" : isActive ? "red" : "white",
+    color: isBreak ? "red" : isActive ? "red" : "inherit",
   };
 
   const breakStyle = {
-    color: isBreak ? "green" : "white",
+    color: isBreak ? "green" : "inherit",
   };
 
   const { visible, setVisible } = useContext(GlobalStateContext);
@@ -229,12 +229,10 @@ const Navbar = ({ author }) => {
 
             {members.some((member) => member.id === user.uid) ? (
               <Button style={{ backgroundColor: "lightblue", color: "white" }}>
-                Invited
+                Added
               </Button>
             ) : (
-              <Button onClick={() => handleInviteClick(user.uid)}>
-                Invite
-              </Button>
+              <Button onClick={() => handleInviteClick(user.uid)}>Add</Button>
             )}
           </div>
         ))}
@@ -299,7 +297,8 @@ const Navbar = ({ author }) => {
           </Button>
         </div>
       </div>
-      {showModal ? <ModalBreak /> : null}
+      {/* {isBreak && <ModalBreak message="It's break time!" />} */}
+      {/* {showModal ? <ModalBreak /> : null} */}
       {visible ? <BackgroundModal /> : null}
     </div>
   );

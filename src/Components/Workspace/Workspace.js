@@ -8,6 +8,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
 } from "firebase/firestore";
 import { auth, db } from "../../Firebase";
@@ -23,18 +24,63 @@ const Workspace = () => {
 
   const [workspaces, setWorkspaces] = useState([]);
 
+  // useEffect(() => {
+  //   const workspaceRef = collection(db, "workspaces");
+
+  //   const unsubscribe = onSnapshot(workspaceRef, (snapshot) => {
+  //     const updatedWorkspaces = snapshot.docs
+  //       .map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }))
+  //       .filter((workspace) => workspace.owner === auth.currentUser.uid);
+
+  //     setWorkspaces(updatedWorkspaces);
+  //   });
+
+  //   // Cleanup function to unsubscribe from the snapshot listener
+  //   return () => unsubscribe();
+  // }, []);
+
+  const [members, setmembers] = useState([]);
+
   useEffect(() => {
     const workspaceRef = collection(db, "workspaces");
+    const currentUserUid = auth.currentUser.uid;
 
-    const unsubscribe = onSnapshot(workspaceRef, (snapshot) => {
-      const updatedWorkspaces = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+    const unsubscribe = onSnapshot(workspaceRef, async (snapshot) => {
+      const updatedWorkspaces = [];
+      const membersArray = [];
+
+      for (const doc of snapshot.docs) {
+        const workspaceData = {
+          id: doc.id,
+          ...doc.data(),
+        };
+
+        // Check if the workspace owner matches the current user or any member matches the current user
+        if (workspaceData.owner === currentUserUid) {
+          updatedWorkspaces.push(workspaceData);
+        } else {
+          const membersSnapshot = await getDocs(collection(doc.ref, "members"));
+          const membersData = membersSnapshot.docs
+            .map((memberDoc) => memberDoc.data())
+            .filter((member) => member.id === currentUserUid);
+
+          if (membersData.length > 0) {
+            membersArray.push(membersData);
+            updatedWorkspaces.push(workspaceData);
+          }
+        }
+      }
+
+      // set the array of membersData
+      setmembers(membersArray);
       setWorkspaces(updatedWorkspaces);
     });
 
-    return () => unsubscribe(); // Unsubscribe from the snapshot listener when component unmounts
+    // Cleanup function to unsubscribe from the snapshot listener
+    return () => unsubscribe();
   }, []);
 
   const handleCreateWorkspace = async () => {

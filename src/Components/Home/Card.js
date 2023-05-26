@@ -240,14 +240,6 @@ const Card = ({
 
   const [selectedLabels, setSelectedLabels] = useState([]);
 
-  useEffect(() => {
-    const unsubscribe = listenForLabels();
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
   const handleButtonClick = async (label) => {
     // Check if the label already exists in the selectedLabels array
     if (selectedLabels.includes(label)) {
@@ -267,6 +259,29 @@ const Card = ({
     });
 
     // Store the selected labels in the Firestore database
+    try {
+      const labelsCollectionRef = collection(
+        db,
+        workspaceId,
+        del,
+        "cards",
+        id,
+        "labels"
+      );
+
+      await addDoc(labelsCollectionRef, { label });
+      console.log("Label added to Firestore:", label);
+    } catch (error) {
+      console.error("Error adding label to Firestore:", error);
+    }
+  };
+
+  const [labels, setLabels] = useState([]);
+
+  // ...
+
+  useEffect(() => {
+    // Create a reference to the "labels" collection in Firestore
     const labelsCollectionRef = collection(
       db,
       workspaceId,
@@ -275,31 +290,27 @@ const Card = ({
       id,
       "labels"
     );
-    await setDoc(doc(labelsCollectionRef, "selectedLabels"), {
-      labels: [...selectedLabels, label],
+
+    // Subscribe to the collection updates using onSnapshot
+    const unsubscribe = onSnapshot(labelsCollectionRef, (querySnapshot) => {
+      // Create an empty array to store the labels
+      const labelsData = [];
+
+      // Iterate through the documents in the query snapshot
+      querySnapshot.forEach((doc) => {
+        // Get the label data from each document and add it to the labelsData array
+        labelsData.push(doc.data().label);
+      });
+
+      // Update the labels state with the retrieved labelsData
+      setLabels(labelsData);
     });
-  };
 
-  const listenForLabels = () => {
-    const labelsCollectionRef = collection(
-      db,
-      workspaceId,
-      del,
-      "cards",
-      id,
-      "labels"
-    );
-
-    return onSnapshot(
-      doc(labelsCollectionRef, "selectedLabels"),
-      (docSnapshot) => {
-        const data = docSnapshot.data();
-        if (data && data.labels) {
-          setSelectedLabels(data.labels);
-        }
-      }
-    );
-  };
+    // Cleanup the subscription when the component unmounts
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <>

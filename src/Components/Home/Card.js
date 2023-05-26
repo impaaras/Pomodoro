@@ -164,6 +164,79 @@ const Card = ({
     };
   }, []);
 
+  // Comment function
+  const [commentInput, setCommentInput] = useState("");
+
+  const handleCommentInput = (event) => {
+    setCommentInput(event.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      makeComment();
+      setCommentInput("");
+    }
+  };
+
+  const makeComment = async () => {
+    const commentsCollectionRef = collection(
+      db,
+      workspaceId,
+      del,
+      "cards",
+      id,
+      "comments"
+    );
+
+    try {
+      // Add the comment to Firestore
+      const docRef = await addDoc(commentsCollectionRef, {
+        comment: commentInput,
+        timestamp: new Date(),
+        commentUser: auth.currentUser.displayName,
+      });
+      console.log("Comment added with ID:", docRef.id);
+
+      // Retrieve the comments from Firestore
+      const querySnapshot = await getDocs(commentsCollectionRef);
+      querySnapshot.forEach((doc) => {
+        console.log("Comment:", doc.data().comment);
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const [comments, setComments] = useState([]);
+  const listenForComments = () => {
+    const commentsCollectionRef = collection(
+      db,
+      workspaceId,
+      del,
+      "cards",
+      id,
+      "comments"
+    );
+
+    return onSnapshot(commentsCollectionRef, (querySnapshot) => {
+      const commentsData = [];
+      querySnapshot.forEach((doc) => {
+        commentsData.push(doc.data());
+      });
+      setComments(commentsData);
+    });
+  };
+
+  useEffect(() => {
+    const unsubscribe = listenForComments();
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const [showLabel, setShowLabel] = useState(false);
+
   return (
     <>
       <div className="card" onClick={() => setShow(true)}>
@@ -422,6 +495,9 @@ const Card = ({
             <div style={{ paddingBottom: "20px" }}>
               <Input
                 placeholder="Write a comment"
+                value={commentInput}
+                onChange={handleCommentInput}
+                onKeyPress={handleKeyPress}
                 style={{
                   backgroundColor: "#DDD",
                   height: "50px",
@@ -429,6 +505,44 @@ const Card = ({
                 }}
               />
             </div>
+            {comments.map((comment) => (
+              <>
+                <div
+                  style={{
+                    backgroundColor: "#EEE",
+                    marginBottom: "5px",
+                    padding: "5px",
+                  }}
+                >
+                  <div style={{}}>
+                    <span
+                      style={{
+                        marginBottom: "5px",
+                        marginTop: "5px",
+                        marginRight: "5px",
+                        fontSize: "14px",
+                        fontFamily: "Poppins",
+                        backgroundColor: "#27374D",
+                        padding: "2px 8px",
+                        color: "#FFF",
+                        borderRadius: "50px",
+                      }}
+                    >
+                      {comment.commentUser.charAt(0).toUpperCase()}
+                    </span>
+                    <span style={{ fontSize: "14px", fontFamily: "Poppins" }}>
+                      {comment.commentUser}
+                    </span>
+                  </div>
+                  <span
+                    key={comment.timestamp}
+                    style={{ fontSize: "12px", fontFamily: "Poppins" }}
+                  >
+                    {comment.comment}
+                  </span>
+                </div>
+              </>
+            ))}
           </div>
           <div
             style={{
@@ -440,7 +554,7 @@ const Card = ({
             }}
           >
             <div>
-              <Button
+              {/* <Button
                 style={{
                   backgroundColor: "#DDD",
                   borderRadius: "3px",
@@ -451,7 +565,7 @@ const Card = ({
                 }}
               >
                 Members
-              </Button>
+              </Button> */}
               <Button
                 style={{
                   backgroundColor: "#DDD",
@@ -465,7 +579,7 @@ const Card = ({
                 Tasks
               </Button>
               <Button
-                onClick={() => setTasks(!tasks)}
+                onClick={() => setShowLabel(true)}
                 style={{
                   backgroundColor: "#DDD",
                   borderRadius: "3px",
@@ -476,18 +590,6 @@ const Card = ({
                 }}
               >
                 Labels
-              </Button>
-              <Button
-                style={{
-                  backgroundColor: "#DDD",
-                  borderRadius: "3px",
-                  fontSize: "14px",
-                  marginBottom: "10px",
-                  width: "150px",
-                  fontFamily: "Poppins",
-                }}
-              >
-                Due Time
               </Button>
               {author && author === auth.currentUser.uid ? (
                 <Button
@@ -507,6 +609,43 @@ const Card = ({
             </div>
           </div>
         </div>
+      </Modal>
+      <Modal
+        title={`Select label`}
+        width="400px"
+        open={showLabel}
+        footer={null}
+        onCancel={() => setShowLabel(false)}
+      >
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Github
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Frontend
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Backend
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Figma
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Designing
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Planing
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>API</Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Databse
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>Bug</Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Report
+        </Button>
+        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+          Documentation
+        </Button>
       </Modal>
     </>
   );

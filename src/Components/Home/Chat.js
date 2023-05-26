@@ -178,10 +178,9 @@ const Chat = () => {
             display: "flex",
             flexDirection: "column",
             height: "100%",
-            padding: "10px",
           }}
         >
-          <div style={{ flex: "1", overflowY: "auto" }}>
+          <div style={{ flex: "1", padding: "10px", overflowY: "auto" }}>
             {messages &&
               messages.map((message, index) => (
                 <p
@@ -204,17 +203,20 @@ const Chat = () => {
                 </p>
               ))}
           </div>
-          <Input
-            type="text"
-            placeholder="Type something..."
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                sendMessage();
-              }
-            }}
-          />
+          <div style={{ padding: "10px" }}>
+            <Input
+              type="text"
+              placeholder="Type something..."
+              value={messageInput}
+              style={{}}
+              onChange={(e) => setMessageInput(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  sendMessage();
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

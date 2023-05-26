@@ -3,6 +3,8 @@
   justify-content: space-between;
   padding-left: 15px;
   padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   background-color: rgba(54, 55, 58, 1);
   align-items: center;
 }

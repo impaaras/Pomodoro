@@ -13,6 +13,8 @@ import BackgroundModal from "./BackgroundModal";
 import { GlobalStateContext } from "../Hooks/GlobalStateContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { GiTomato } from "react-icons/gi";
+import ModalBreak from "./Modal";
+
 import {
   addDoc,
   collection,
@@ -122,6 +124,7 @@ const Navbar = () => {
   const breakStyle = {
     color: isBreak ? "green" : "white",
   };
+
   const { visible, setVisible } = useContext(GlobalStateContext);
 
   const changeloc = useNavigate();
@@ -225,7 +228,9 @@ const Navbar = () => {
             <p style={{ margin: "5px", fontSize: "18px" }}>{user.name}</p>
 
             {members.some((member) => member.id === user.uid) ? (
-              <Button style={{ backgroundColor: "blue" }}>Invited</Button>
+              <Button style={{ backgroundColor: "lightblue", color: "white" }}>
+                Invited
+              </Button>
             ) : (
               <Button onClick={() => handleInviteClick(user.uid)}>
                 Invite
@@ -292,6 +297,7 @@ const Navbar = () => {
           </Button>
         </div>
       </div>
+      {showModal ? <ModalBreak /> : null}
       {visible ? <BackgroundModal /> : null}
     </div>
   );

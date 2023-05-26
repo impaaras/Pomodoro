@@ -235,7 +235,71 @@ const Card = ({
     };
   }, []);
 
+  // label content
   const [showLabel, setShowLabel] = useState(false);
+
+  const [selectedLabels, setSelectedLabels] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = listenForLabels();
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const handleButtonClick = async (label) => {
+    // Check if the label already exists in the selectedLabels array
+    if (selectedLabels.includes(label)) {
+      return; // Skip adding the label if it already exists
+    }
+
+    // Add the label to the selectedLabels array (maximum 3 labels)
+    if (selectedLabels.length >= 3) {
+      return;
+    }
+    setSelectedLabels((prevLabels) => {
+      if (prevLabels.length < 3) {
+        return [...prevLabels, label];
+      } else {
+        return prevLabels;
+      }
+    });
+
+    // Store the selected labels in the Firestore database
+    const labelsCollectionRef = collection(
+      db,
+      workspaceId,
+      del,
+      "cards",
+      id,
+      "labels"
+    );
+    await setDoc(doc(labelsCollectionRef, "selectedLabels"), {
+      labels: [...selectedLabels, label],
+    });
+  };
+
+  const listenForLabels = () => {
+    const labelsCollectionRef = collection(
+      db,
+      workspaceId,
+      del,
+      "cards",
+      id,
+      "labels"
+    );
+
+    return onSnapshot(
+      doc(labelsCollectionRef, "selectedLabels"),
+      (docSnapshot) => {
+        const data = docSnapshot.data();
+        if (data && data.labels) {
+          setSelectedLabels(data.labels);
+        }
+      }
+    );
+  };
 
   return (
     <>
@@ -617,33 +681,70 @@ const Card = ({
         footer={null}
         onCancel={() => setShowLabel(false)}
       >
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+          onClick={() => handleButtonClick("Github")}
+        >
           Github
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("Frontend")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Frontend
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("Backend")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Backend
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("Figma")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Figma
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("Designing")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Designing
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("Planing")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Planing
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>API</Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("API")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
+          API
+        </Button>
+        <Button
+          onClick={() => handleButtonClick("Databse")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Databse
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>Bug</Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("Bugs")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
+          Bugs
+        </Button>
+        <Button
+          onClick={() => handleButtonClick("Report")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Report
         </Button>
-        <Button style={{ marginRight: "5px", marginBottom: "5px" }}>
+        <Button
+          onClick={() => handleButtonClick("Documentation")}
+          style={{ marginRight: "5px", marginBottom: "5px" }}
+        >
           Documentation
         </Button>
       </Modal>

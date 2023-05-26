@@ -257,9 +257,9 @@ const Navbar = ({ author }) => {
         <Button className="button_exit" onClick={() => setShift(!shift)}>
           <FiMessageSquare className="exit__icon" />
         </Button>
-        <div>
+        {/* <div>
           <Input className="input__left" placeholder="search..." />
-        </div>
+        </div> */}
       </div>
       <div className="logo">
         <p>EmProductify</p>

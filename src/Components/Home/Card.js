@@ -304,6 +304,7 @@ const Card = ({
 
       // Update the labels state with the retrieved labelsData
       setLabels(labelsData);
+      console.log(labelsData);
     });
 
     // Cleanup the subscription when the component unmounts
@@ -330,31 +331,22 @@ const Card = ({
           <div
             style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
           >
-            <div
-              style={{
-                backgroundColor: "#DDD",
-                padding: "5px",
-                width: "fit-content",
-                borderRadius: "3px",
-                marginRight: "5px",
-                fontSize: "8px",
-                fontFamily: "Poppins",
-              }}
-            >
-              Github
-            </div>
-            <div
-              style={{
-                backgroundColor: "#DDD",
-                padding: "5px",
-                width: "fit-content",
-                borderRadius: "3px",
-                fontSize: "8px",
-                fontFamily: "Poppins",
-              }}
-            >
-              Database
-            </div>
+            {labels.slice(0, 3).map((label) => (
+              <p
+                key={label}
+                style={{
+                  backgroundColor: "#DDD",
+                  padding: "5px",
+                  width: "fit-content",
+                  borderRadius: "3px",
+                  marginRight: "5px",
+                  fontSize: "8px",
+                  fontFamily: "Poppins",
+                }}
+              >
+                {label}
+              </p>
+            ))}
           </div>
           {tasks.length > 0 ? (
             <div
@@ -692,6 +684,7 @@ const Card = ({
         footer={null}
         onCancel={() => setShowLabel(false)}
       >
+        <p>Note: Select only three labels</p>
         <Button
           style={{ marginRight: "5px", marginBottom: "5px" }}
           onClick={() => handleButtonClick("Github")}

@@ -31,3 +31,42 @@
   width: 0; /* Safari and Chrome */
   height: 0;
 }
+.pie-chart {
+  width: 300px; /* Adjust the width of the pie chart */
+  height: 300px; /* Adjust the height of the pie chart */
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.pie-slice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 0%, 100% 100%);
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Add hover effect to the pie slices */
+.pie-slice:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Add animation for a smooth transition */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Apply animation to the pie chart */
+.pie-chart:hover .pie-slice {
+  animation: spin 10s linear infinite;
+}

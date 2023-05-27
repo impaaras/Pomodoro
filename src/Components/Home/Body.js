@@ -97,6 +97,83 @@ function ShowingList({
     }
   }
 
+  // Calculate
+  // useEffect(() => {
+  //   // Specify the path to fetch list documents
+  //   const listCollectionRef = collection(db, workspaceId);
+  //   console.log("hello");
+
+  //   // Subscribe to the changes in list documents using onSnapshot
+  //   const unsubscribe = onSnapshot(listCollectionRef, (listSnapshot) => {
+  //     listSnapshot.forEach((listDoc) => {
+  //       const listId = listDoc.id;
+  //       console.log(listId);
+
+  //       // Specify the path to fetch card documents under each list
+  //       const cardsCollectionRef = collection(
+  //         db,
+  //         workspaceId,
+  //         "lists",
+  //         listId,
+  //         "cards"
+  //       );
+
+  //       // Subscribe to the changes in card documents using onSnapshot
+  //       const cardsUnsubscribe = onSnapshot(
+  //         cardsCollectionRef,
+  //         (cardsSnapshot) => {
+  //           cardsSnapshot.forEach((cardDoc) => {
+  //             const cardId = cardDoc.id;
+  //             console.log(cardId);
+
+  //             // Specify the path to fetch tasks under each card
+  //             const tasksCollectionRef = collection(
+  //               db,
+  //               workspaceId,
+  //               "lists",
+  //               listId,
+  //               "cards",
+  //               cardId,
+  //               "tasks"
+  //             );
+
+  //             // Subscribe to the changes in tasks using onSnapshot
+  //             const tasksUnsubscribe = onSnapshot(
+  //               tasksCollectionRef,
+  //               (tasksSnapshot) => {
+  //                 const tasksArray = [];
+
+  //                 tasksSnapshot.forEach((taskDoc) => {
+  //                   const taskData = taskDoc.data();
+  //                   tasksArray.push(taskData);
+  //                 });
+
+  //                 // Log the tasks array for the current card
+  //                 console.log(`Tasks Array for Card ${cardId}:`, tasksArray);
+  //               }
+  //             );
+
+  //             // Unsubscribe from the tasks collection snapshot listener
+  //             return () => {
+  //               tasksUnsubscribe();
+  //             };
+  //           });
+  //         }
+  //       );
+
+  //       // Unsubscribe from the card collection snapshot listener
+  //       return () => {
+  //         cardsUnsubscribe();
+  //       };
+  //     });
+  //   });
+
+  //   // Unsubscribe from the list collection snapshot listener when component unmounts
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+
   // rgb(218, 222, 226);
   return (
     <Droppable droppableId={id.toString()}>

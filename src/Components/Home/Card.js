@@ -14,6 +14,7 @@ import {
 import { auth, db } from "../../Firebase";
 import { Button, Input, Modal } from "antd";
 import { HiMenuAlt2 } from "react-icons/hi";
+import PieChart from "./Piechart";
 
 const Card = ({
   text,
@@ -278,8 +279,6 @@ const Card = ({
 
   const [labels, setLabels] = useState([]);
 
-  // ...
-
   useEffect(() => {
     // Create a reference to the "labels" collection in Firestore
     const labelsCollectionRef = collection(
@@ -308,6 +307,130 @@ const Card = ({
     });
 
     // Cleanup the subscription when the component unmounts
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  // Calculate piechart
+  // useEffect(() => {
+  //   // Specify the path to fetch card documents
+  //   const cardsCollectionRef = collection(db, workspaceId, del, "cards");
+
+  //   // Subscribe to the changes in card documents using onSnapshot
+  //   const unsubscribe = onSnapshot(cardsCollectionRef, (cardsSnapshot) => {
+  //     cardsSnapshot.forEach((cardDoc) => {
+  //       const cardId = cardDoc.id;
+
+  //       // Specify the path to fetch tasks under each card
+  //       const tasksCollectionRef = collection(
+  //         db,
+  //         workspaceId,
+  //         del,
+  //         "cards",
+  //         id,
+  //         "tasks"
+  //       );
+
+  //       // Subscribe to the changes in tasks using onSnapshot
+  //       const tasksUnsubscribe = onSnapshot(
+  //         tasksCollectionRef,
+  //         (tasksSnapshot) => {
+  //           const tasksArray = [];
+  //           const userTasksCount = {};
+
+  //           tasksSnapshot.forEach((taskDoc) => {
+  //             const taskData = taskDoc.data();
+  //             tasksArray.push(taskData);
+
+  //             const taskEditor = taskData.taskEditor;
+
+  //             // Count the occurrences of the user's name in the taskEditor
+  //             const count = (taskEditor.match(/\b\w+\b/g) || []).length;
+
+  //             if (!userTasksCount[taskEditor]) {
+  //               userTasksCount[taskEditor] = count;
+  //             } else {
+  //               userTasksCount[taskEditor] += count;
+  //             }
+  //           });
+
+  //           // Create an array with name-count pairs
+  //           const userTasksArray = Object.entries(userTasksCount).map(
+  //             ([name, count]) => ({
+  //               name,
+  //               count,
+  //             })
+  //           );
+
+  //           // Log the tasks array and the userTasksArray for the current card
+  //           console.log(`Tasks Array for Card ${cardId}:`, tasksArray);
+  //           console.log(`User Tasks Array for Card ${cardId}:`, userTasksArray);
+  //         }
+  //       );
+
+  //       // Unsubscribe from the tasks collection snapshot listener
+  //       return () => {
+  //         tasksUnsubscribe();
+  //       };
+  //     });
+  //   });
+
+  //   // Unsubscribe from the card collection snapshot listener when component unmounts
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+
+  const [taskData, setTaskData] = useState([]);
+
+  useEffect(() => {
+    // Specify the path
+    const tasksCollectionRef = collection(
+      db,
+      workspaceId,
+      del,
+      "cards",
+      id,
+      "tasks"
+    );
+
+    // Subscribe to the changes using onSnapshot
+    const unsubscribe = onSnapshot(tasksCollectionRef, (snapshot) => {
+      const tasksArray = [];
+      const userTasksCount = {};
+
+      snapshot.forEach((doc) => {
+        const taskData = doc.data();
+        tasksArray.push(taskData);
+
+        const taskEditor = taskData.taskEditor;
+
+        // Count the occurrences of the user's name in the taskEditor
+        const count = (taskEditor.match(/\b\w+\b/g) || []).length;
+
+        if (!userTasksCount[taskEditor]) {
+          userTasksCount[taskEditor] = count;
+        } else {
+          userTasksCount[taskEditor] += count;
+        }
+      });
+
+      // Create an array with name-count pairs
+      const userTasksArray = Object.entries(userTasksCount).map(
+        ([name, count]) => ({
+          name,
+          count,
+        })
+      );
+
+      // Log the tasks array and the userTasksArray
+      console.log("Tasks Array:", tasksArray);
+      console.log("User Tasks Array:", userTasksArray);
+      setTaskData(userTasksArray);
+    });
+
+    // Unsubscribe from the snapshot listener when component unmounts
     return () => {
       unsubscribe();
     };
@@ -382,6 +505,7 @@ const Card = ({
         </div>
         {/* <button onClick={() => deleteCard(workspaceId, id)}>Delete</button> */}
         <div></div>
+        <PieChart userTasksArray={taskData} />
         <div></div>
       </div>
       <Modal

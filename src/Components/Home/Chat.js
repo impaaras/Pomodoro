@@ -228,7 +228,7 @@ const Chat = ({ workspaceId }) => {
                       }}
                     >
                       {message.senderName &&
-                        auth.currentUser.displayName.charAt(0).toUpperCase()}
+                        message.senderName.charAt(0).toUpperCase()}
                     </span>
                   </p>
                 </div>

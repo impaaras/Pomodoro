@@ -18,10 +18,10 @@ body {
 
 .login-page {
   display: flex;
-  justify-content: center;
+  justify-content: center;  
   align-items: center;
   min-height: 100vh;
-  background: rgba(54, 55, 58, 1);
+  background: #FFF;
 }
 .login-box {
   display: flex;
@@ -39,18 +39,18 @@ body {
   flex: 1 0 100%;
   max-width: 480px;
   width: 100%;
-  background-color: rgba(54, 55, 58, 1);
+  background-color: #AAA;
   padding: 60px;
 }
 #login-form p {
   margin-bottom: 30px;
-  color: white;
+  color:rgba(54, 55, 58, 1);
 }
 .ant-checkbox + span {
   color: white;
 }
 #login-form p.form-title {
-  color: #fff;
+  color: rgba(54, 55, 58, 1);
   font-family: "Josefin Sans", sans-serif;
   font-size: 42px;
   font-weight: bold;
@@ -65,32 +65,32 @@ body {
 }
 #login-form .ant-input-affix-wrapper {
   padding: 12px 15px;
-  background-color: rgba(54, 55, 58, 1);
+  background-color: #FFF;
 }
 #login-form_name {
   height: 48px;
 }
 #login-form_password {
-  background-color: rgba(54, 55, 58, 1);
-  color: white;
+  background-color: #FFF;
+  color: rgba(54, 55, 58, 1);
 }
 #login-form_password::placeholder {
-  color: white;
+  color: rgba(54, 55, 58, 1);
 }
 #login-form_name {
-  background-color: rgba(54, 55, 58, 1);
-  color: white;
+  background-color: #FFF;
+  color: rgba(54, 55, 58, 1);
 }
 #login-form_name::placeholder {
-  color: white;
+  color: rgba(54, 55, 58, 1);
 }
 #login-form_remember {
   color: white;
 }
 #login-form_email {
   height: 48px;
-  background-color: rgba(54, 55, 58, 1);
-  color: white;
+  background-color: #FFF;
+  color: rgba(54, 55, 58, 1);
 }
 #login-form .ant-btn {
   height: 42px;

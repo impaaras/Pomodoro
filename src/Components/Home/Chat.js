@@ -135,7 +135,7 @@ const Chat = ({ workspaceId }) => {
                       borderRadius: "50px",
                     }}
                   >
-                    {auth.currentUser.displayName.charAt(0).toUpperCase()}
+                    {user.name.charAt(0).toUpperCase()}
                   </span>
 
                   <div

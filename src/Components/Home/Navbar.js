@@ -351,7 +351,7 @@ const Navbar = ({ author }) => {
           </Button>
         </div>
       </div>
-      {/* {isBreak && <ModalBreak message="It's break time!" />} */}
+      {isBreak && <ModalBreak message="It's break time!" />}
       {/* {showModal ? <ModalBreak /> : null} */}
       {visible ? <BackgroundModal /> : null}
       {changeName ? (

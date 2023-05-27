@@ -505,7 +505,7 @@ const Card = ({
         </div>
         {/* <button onClick={() => deleteCard(workspaceId, id)}>Delete</button> */}
         <div></div>
-        <PieChart userTasksArray={taskData} />
+
         <div></div>
       </div>
       <Modal
@@ -570,6 +570,7 @@ const Card = ({
             >
               {des}
             </p>
+
             <div>
               <Input
                 placeholder="write a description"
@@ -578,6 +579,7 @@ const Card = ({
                 onKeyDown={handleEnterKeyPress}
               />
             </div>
+            <PieChart userTasksArray={taskData} />
             <div style={{ marginTop: "50px" }}></div>
             <div
               style={{
